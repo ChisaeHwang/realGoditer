@@ -3,6 +3,7 @@ package realGoditer.example.realGoditer.domain.member.domain.converter;
 import jakarta.persistence.AttributeConverter;
 import realGoditer.example.realGoditer.domain.member.domain.EncodedPassword;
 
+
 public class PasswordConverter implements AttributeConverter<EncodedPassword, String> {
 
     @Override

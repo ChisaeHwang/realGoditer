@@ -63,6 +63,16 @@ public class Member {
         }
     }
 
+    public Member update(String name) {
+        this.name = name;
+
+        return this;
+    }
+
+    public String getRoleKey() {
+        return this.role.getKey();
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
