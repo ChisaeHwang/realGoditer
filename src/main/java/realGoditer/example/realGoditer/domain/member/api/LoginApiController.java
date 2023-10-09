@@ -21,11 +21,6 @@ public class LoginApiController {
 
     private final GoogleOAuth googleOAuth;
 
-    @GetMapping("/user")
-    public void user() {
-        customOAuth2UserService.saveUser();
-    }
-
 
     @GetMapping("/code/{registrationId}")
     public void googleLogin(@RequestParam String code, @PathVariable String registrationId) {

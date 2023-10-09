@@ -2,20 +2,59 @@ package realGoditer.example.realGoditer.domain.member.dto;
 
 
 import lombok.Getter;
-import realGoditer.example.realGoditer.domain.member.domain.Email;
 import realGoditer.example.realGoditer.domain.member.domain.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Getter
-public class SessionUser implements Serializable {
-    private String name;
-    private String email;
-    private String picture;
+public class SessionUser implements UserDetails {
+    private User user;
 
     public SessionUser(User user) {
-        this.name = user.getUsername();
-        this.email = user.getEmail().getValue();
-        this.picture = user.getPicture();
+        this.user = user;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Collection<GrantedAuthority> collections = new ArrayList<>();
+
+        collections.add(() -> {
+            return "ROLE_" + user.getRole();
+        });
+
+        return collections;
+    }
+
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return user.getName();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

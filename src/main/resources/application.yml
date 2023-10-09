@@ -8,7 +8,7 @@ spring:
     initialization-mode: always
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     database-platform: org.hibernate.dialect.MySQL8Dialect
     defer-datasource-initialization: true
     properties:
@@ -23,14 +23,8 @@ spring:
             client-secret: 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
             redirect-uri: http://localhost:8080/login/oauth2/code/google
             scope:
-              - openid
               - profile
               - email
-        provider:
-          google:
-            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
-            token-uri: https://oauth2.googleapis.com/token
-            user-info-uri: https://www.googleapis.com/oauth2/v2/userinfo
 management:
   endpoints:
     web:
@@ -49,7 +43,6 @@ cors:
   allowed-origin: http://localhost:8080
 
 
-logging.level.com.yourpackage: INFO
 
 
 
