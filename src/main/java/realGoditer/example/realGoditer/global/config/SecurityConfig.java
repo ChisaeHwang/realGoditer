@@ -7,13 +7,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import realGoditer.example.realGoditer.domain.member.service.CustomOAuth2UserService;
 import realGoditer.example.realGoditer.global.config.jwt.JwtAuthenticationFilter;
 import realGoditer.example.realGoditer.global.config.jwt.JwtTokenProvider;
@@ -21,8 +20,10 @@ import realGoditer.example.realGoditer.global.config.oauth.HttpCookieOAuth2Autho
 import realGoditer.example.realGoditer.global.config.oauth.OAuth2AuthenticationFailureHandler;
 import realGoditer.example.realGoditer.global.config.oauth.OAuth2AuthenticationSuccessHandler;
 
+import java.util.Arrays;
+
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -53,15 +54,31 @@ public class SecurityConfig {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
+
+    @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(formLogin -> formLogin.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/**", "/login/**", "/oauth2/**").permitAll()
+                                .requestMatchers("/api/**", "/login/**", "/oauth2/**,", "/api/getUserEmail").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2Login -> {
@@ -71,7 +88,7 @@ public class SecurityConfig {
                             .authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository());
                     oauth2Login
                             .redirectionEndpoint()
-                            .baseUri("/login/oauth2/code/**");
+                            .baseUri("/login/oauth2/code/google");
                     oauth2Login
                             .userInfoEndpoint()
                             .userService(customOAuth2UserService);

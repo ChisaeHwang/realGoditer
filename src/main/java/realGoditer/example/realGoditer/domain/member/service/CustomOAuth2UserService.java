@@ -1,6 +1,7 @@
 package realGoditer.example.realGoditer.domain.member.service;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -48,5 +49,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .orElse(attributes.toEntity());
 
         return userRepository.save(user);
+    }
+
+    public User findBySubject(String subject) {
+        return userRepository.findBySubject(subject)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with subject: " + subject));
     }
 }

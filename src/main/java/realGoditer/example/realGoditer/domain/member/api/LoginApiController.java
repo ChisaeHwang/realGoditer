@@ -19,7 +19,7 @@ public class LoginApiController {
 
     private final CustomOAuth2UserService customOAuth2UserService;
 
-    private final GoogleOAuth googleOAuth;
+//    private final GoogleOAuth googleOAuth;
 
 
     @GetMapping("/code/{registrationId}")
@@ -35,9 +35,9 @@ public class LoginApiController {
 //        return googleOAuth.getGoogleAccessToken(code);
 //    }
 
-    @GetMapping("/google")
-    public void getGoogleAuthUrl(HttpServletResponse response) throws Exception {
-        log.info(googleOAuth.getGoogleRedirectUrl());
-        response.sendRedirect(googleOAuth.getGoogleRedirectUrl());
-    }
+//    @GetMapping("/google")
+//    public void getGoogleAuthUrl(HttpServletResponse response) throws Exception {
+//        log.info(googleOAuth.getGoogleRedirectUrl());
+//        response.sendRedirect(googleOAuth.getGoogleRedirectUrl());
+//    }
 }
