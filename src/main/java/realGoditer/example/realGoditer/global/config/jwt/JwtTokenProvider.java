@@ -12,7 +12,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Component;
+import realGoditer.example.realGoditer.domain.member.domain.CustomUserDetails;
 
 import java.security.Key;
 import java.util.*;
@@ -30,22 +32,35 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(secretByteKey);
     }
 
+
     public String generateToken(Authentication authentication) {
+        Object principal = authentication.getPrincipal();
+        String userId = null;
+
+        if (principal instanceof CustomUserDetails) {
+            userId = ((CustomUserDetails) principal).getId().toString();
+        } else if (principal instanceof DefaultOAuth2User) {
+            // DefaultOAuth2User에서 필요한 정보를 추출
+            DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) principal;
+            userId = defaultOAuth2User.getName();  // 또는 다른 필요한 정보를 사용
+        } else {
+            throw new RuntimeException("Unsupported principal type");
+        }
+
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        //Access Token 생성
         return Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(userId)
                 .claim("auth", authorities)
-                .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 60 * 30))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
+
     public Authentication getAuthentication(String accessToken) {
-        //토큰 복호화
         Claims claims = parseClaims(accessToken);
 
         if (claims.get("auth") == null) {
@@ -57,9 +72,20 @@ public class JwtTokenProvider {
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
+        CustomUserDetails principal = new CustomUserDetails();
+        principal.setId(Long.parseLong(claims.getSubject()));  // 문자열로 된 ID를 Long으로 변환
+        // ... 여기에 다른 필드들을 설정할 수 있습니다.
+
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
+
+
+
+    public String getEmailFromToken(String token, @Value("${jwt.secret}") String secretKey) {
+        Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        return claims.get("email", String.class);
+    }
+
 
     public boolean validateToken(String token) {
         try {

@@ -31,29 +31,19 @@ public class UserController {
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getUserEmail")
-    public String getUserEmail(@RequestHeader("Authorization") String token) {
-        // 토큰에서 식별자(subject) 추출
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
-        String subject = jwtTokenProvider.getAuthentication(token).getName();
+    public String logTokenInfo(@RequestHeader("Authorization") String tokenHeader) {
+        // 보통 토큰 앞에 "Bearer "가 붙어 있기 때문에 제거
+        String token = tokenHeader.replace("Bearer ", "");
 
-        // 식별자를 통해 사용자 정보 조회
-        User user = loginService.findBySubject(subject);  // findBySubject는 예시 메서드입니다. 실제로 구현해야 할 수도 있습니다.
+        // 토큰에서 클레임 정보 추출
+        String userId = jwtTokenProvider.getAuthentication(token).getName();
+        String authorities = jwtTokenProvider.getAuthentication(token).getAuthorities().toString();
 
-        log.info(user.getEmail());
+        // 로그 출력
+        log.info("User ID from token: {}", userId);
+        log.info("Authorities from token: {}", authorities);
 
-        return user.getEmail();  // 사용자의 이메일 반환
+        return "Token info logged!";
     }
 
-    private String getSubjectFromToken(String token) {
-        // JwtTokenProvider 또는 직접 JWT 파싱 코드 사용
-        String userEmail = Jwts.parser()
-                .setSigningKey(YOUR_SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-
-        return userEmail; // 여기서 subject는 이메일이 됩니다.
-    }
 }
