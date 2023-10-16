@@ -85,14 +85,15 @@ public class JwtTokenProvider {
         }
     }
 
-    public String getEmailFromToken(String token) {
+    public String getSubjectFromToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(key)
                 .parseClaimsJws(token)
                 .getBody();
 
-        return claims.get("email").toString();
+        return claims.getSubject();
     }
+
 
 
 }

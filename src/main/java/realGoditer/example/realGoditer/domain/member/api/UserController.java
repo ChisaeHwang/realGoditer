@@ -31,7 +31,7 @@ public class UserController {
         }
 
         try {
-            String email = jwtTokenProvider.getEmailFromToken(token.substring(7));
+            String email = jwtTokenProvider.getSubjectFromToken(token.substring(7));
             return ResponseEntity.ok(email);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
