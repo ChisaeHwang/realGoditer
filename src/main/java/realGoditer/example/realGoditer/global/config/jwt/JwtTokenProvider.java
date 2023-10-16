@@ -33,10 +33,10 @@ public class JwtTokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        // Access Token 생성
+        //Access Token 생성
         return Jwts.builder()
-                .setSubject(authorities) // userId를 sub로 사용
-                .claim("auth", authentication.getName())
+                .setSubject(authentication.getName())
+                .claim("auth", authorities)
                 .setExpiration(new Date(System.currentTimeMillis()+ 1000 * 60 * 30))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
