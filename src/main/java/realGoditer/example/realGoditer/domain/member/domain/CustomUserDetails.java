@@ -7,8 +7,9 @@ import java.util.Collection;
 
 public class CustomUserDetails implements UserDetails {
 
-    private Long id;  // 사용자의 데이터베이스 ID
+    private String id;  // 사용자의 데이터베이스 ID
     private String username;
+    private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
@@ -28,6 +29,11 @@ public class CustomUserDetails implements UserDetails {
     public String getUsername() {
         return username;
     }
+
+    public String getEmail(){
+        return email;
+    }
+
 
     @Override
     public boolean isAccountNonExpired() {
@@ -50,11 +56,11 @@ public class CustomUserDetails implements UserDetails {
     }
 
     // 사용자의 데이터베이스 ID를 반환하는 getter 메서드
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

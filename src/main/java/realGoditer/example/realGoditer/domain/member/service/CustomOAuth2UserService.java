@@ -51,8 +51,4 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         return userRepository.save(user);
     }
 
-    public User findBySubject(String subject) {
-        return userRepository.findBySubject(subject)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with subject: " + subject));
-    }
 }

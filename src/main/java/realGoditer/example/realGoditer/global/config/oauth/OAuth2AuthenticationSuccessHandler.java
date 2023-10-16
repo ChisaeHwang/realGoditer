@@ -6,51 +6,33 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriComponentsBuilder;
 import realGoditer.example.realGoditer.global.config.jwt.JwtTokenProvider;
-import realGoditer.example.realGoditer.global.config.util.CookieUtils;
 
 import java.io.IOException;
-import java.util.Optional;
-
-import static realGoditer.example.realGoditer.global.config.oauth.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final JwtTokenProvider tokenProvider;
 
-    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
-
-    public OAuth2AuthenticationSuccessHandler(JwtTokenProvider tokenProvider, HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository) {
+    public OAuth2AuthenticationSuccessHandler(JwtTokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
-        this.httpCookieOAuth2AuthorizationRequestRepository = httpCookieOAuth2AuthorizationRequestRepository;
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        String targetUrl = determineTargetUrl(request, response, authentication);
-
-        clearAuthenticationAttributes(request, response);
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
-    }
-
-    protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        Optional<String> redirectUri = CookieUtils.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
-                .map(Cookie::getValue);
-
-        String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
-
         String token = tokenProvider.generateToken(authentication);
 
-        return UriComponentsBuilder.fromUriString(targetUrl)
-                .queryParam("token", token)
-                .build().toUriString();
-    }
+        // JWT 토큰을 쿠키에 설정
+        Cookie jwtCookie = new Cookie("jwt_token", token);
+        jwtCookie.setHttpOnly(false); // true는 JS에서 쿠키에 접근할 수 없도록 설정
+        jwtCookie.setMaxAge(7 * 24 * 60 * 60); // 쿠키 유효 기간을 7일로 설정
+        jwtCookie.setPath("/"); // 쿠키가 전송되는 경로 설정
+        // jwtCookie.setSecure(true); // HTTPS를 사용할 경우 활성화하세요.
+        response.addCookie(jwtCookie);
 
-    protected void clearAuthenticationAttributes(HttpServletRequest request, HttpServletResponse response) {
-        super.clearAuthenticationAttributes(request);
-        httpCookieOAuth2AuthorizationRequestRepository.removeAuthorizationRequestCookies(request, response);
+        String targetUrl = "http://localhost:3000";
+        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
-
 }
+

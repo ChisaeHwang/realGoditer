@@ -25,18 +25,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = resolveToken((HttpServletRequest) request);
 
-        if (token != null) {
-            if (jwtTokenProvider.validateToken(token)) {
-                Authentication authentication = jwtTokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-                // 토큰이 유효하지 않은 경우
-                HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-                httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
-                return;
-            }
+        // 토큰 유효성 검사
+        if (token!=null && jwtTokenProvider.validateToken(token)) {
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-
         chain.doFilter(request, response);
     }
 

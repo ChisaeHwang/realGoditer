@@ -1,5 +1,6 @@
 package realGoditer.example.realGoditer.global.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,9 +17,9 @@ import org.springframework.web.client.RestTemplate;
 import realGoditer.example.realGoditer.domain.member.service.CustomOAuth2UserService;
 import realGoditer.example.realGoditer.global.config.jwt.JwtAuthenticationFilter;
 import realGoditer.example.realGoditer.global.config.jwt.JwtTokenProvider;
-import realGoditer.example.realGoditer.global.config.oauth.HttpCookieOAuth2AuthorizationRequestRepository;
 import realGoditer.example.realGoditer.global.config.oauth.OAuth2AuthenticationFailureHandler;
 import realGoditer.example.realGoditer.global.config.oauth.OAuth2AuthenticationSuccessHandler;
+import realGoditer.example.realGoditer.infra.OAuth.GoogleOAuth;
 
 import java.util.Arrays;
 
@@ -31,16 +32,14 @@ public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
-    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, JwtTokenProvider jwtTokenProvider, OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler, OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler) {
+    public SecurityConfig(CustomOAuth2UserService customOAuth2UserService,
+                          JwtTokenProvider jwtTokenProvider,
+                          OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler,
+                          OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler) {
         this.customOAuth2UserService = customOAuth2UserService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
         this.oAuth2AuthenticationFailureHandler = oAuth2AuthenticationFailureHandler;
-    }
-
-    @Bean
-    public HttpCookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository() {
-        return new HttpCookieOAuth2AuthorizationRequestRepository();
     }
 
     @Bean
@@ -57,12 +56,15 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*")); // 모든 헤더를 허용
+        configuration.setExposedHeaders(Arrays.asList("authorization")); // 클라이언트에게 노출할 헤더 지정
         configuration.setMaxAge(3000L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -82,8 +84,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth2Login -> {
                     oauth2Login
                             .authorizationEndpoint()
-                            .baseUri("/oauth2/authorize")
-                            .authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository());
+                            .baseUri("/oauth2/authorize");
                     oauth2Login
                             .redirectionEndpoint()
                             .baseUri("/login/oauth2/code/google");
