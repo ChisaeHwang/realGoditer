@@ -1,6 +1,5 @@
 package realGoditer.example.realGoditer.global.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,17 +8,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.client.RestTemplate;
-import realGoditer.example.realGoditer.domain.member.service.CustomOAuth2UserService;
-import realGoditer.example.realGoditer.global.config.jwt.JwtAuthenticationFilter;
+import realGoditer.example.realGoditer.domain.member.service.CustomOAuth2UserService;;
 import realGoditer.example.realGoditer.global.config.jwt.JwtTokenProvider;
 import realGoditer.example.realGoditer.global.config.oauth.OAuth2AuthenticationFailureHandler;
 import realGoditer.example.realGoditer.global.config.oauth.OAuth2AuthenticationSuccessHandler;
-import realGoditer.example.realGoditer.infra.OAuth.GoogleOAuth;
 
 import java.util.Arrays;
 
@@ -94,9 +90,7 @@ public class SecurityConfig {
                     oauth2Login
                             .successHandler(oAuth2AuthenticationSuccessHandler)
                             .failureHandler(oAuth2AuthenticationFailureHandler);
-                })
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-
+                });
         return http.build();
     }
 }
