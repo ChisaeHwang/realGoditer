@@ -24,6 +24,7 @@ public class UserController {
     @Member
     @GetMapping("/getUserEmail")
     public ResponseEntity<String> getUserEmail(@Authenticated AuthPrincipal authPrincipal) {
+        log.info("토큰 메일" + authPrincipal.getEmail());
         return ResponseEntity.ok(authPrincipal.getEmail());
     }
 
