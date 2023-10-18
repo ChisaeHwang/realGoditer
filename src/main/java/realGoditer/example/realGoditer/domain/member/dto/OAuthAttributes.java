@@ -15,6 +15,7 @@ public class OAuthAttributes {
     private String name;
     private String email;
     private String provider;
+    private Role role;
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
         if("naver".equals(registrationId)) {
@@ -61,12 +62,13 @@ public class OAuthAttributes {
                 .build();
     }
 
-    public User toEntity() {
+    public User toEntity(Role role) {
         return User.builder()
                 .name(name)
                 .email(email)
                 .provider(provider)
-                .role(Role.USER)
+                .role(role)
                 .build();
     }
+
 }

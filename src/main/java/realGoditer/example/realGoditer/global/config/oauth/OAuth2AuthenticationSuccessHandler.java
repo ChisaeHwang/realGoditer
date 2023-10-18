@@ -51,7 +51,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // jwtCookie.setSecure(true); // HTTPS를 사용할 경우 활성화하세요.
         response.addCookie(jwtCookie);
 
-        String targetUrl = "http://localhost:3000";
+        String targetUrl;
+        if(user.getRole().isInitial()) {
+            targetUrl = "http://localhost:3000/signup";
+        } else {
+            targetUrl = "http://localhost:3000/home";
+        }
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 

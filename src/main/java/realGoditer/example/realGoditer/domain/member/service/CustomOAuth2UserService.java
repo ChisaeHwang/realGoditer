@@ -10,10 +10,12 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import realGoditer.example.realGoditer.domain.member.dao.UserRepository;
+import realGoditer.example.realGoditer.domain.member.domain.Role;
 import realGoditer.example.realGoditer.domain.member.domain.User;
 import realGoditer.example.realGoditer.domain.member.dto.OAuthAttributes;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
@@ -44,11 +46,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private User saveOrUpdate(OAuthAttributes attributes) {
-        User user = userRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getName(), attributes.getProvider()))
-                .orElse(attributes.toEntity());
+        Optional<User> existingUser = userRepository.findByEmail(attributes.getEmail());
 
-        return userRepository.save(user);
+        if (existingUser.isPresent()) {
+            return existingUser.get().update(attributes.getName(), attributes.getProvider());
+        } else {
+            return userRepository.save(attributes.toEntity(Role.INITIAL));
+        }
     }
+
 
 }
