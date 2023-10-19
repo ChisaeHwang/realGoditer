@@ -40,6 +40,10 @@ jwt:
 cors:
   allowed-origin: http://localhost:3000
 
+redirect:
+  signup-url: http://localhost:3000/signup
+  home-url : http://localhost:3000/home
+
 
 
 

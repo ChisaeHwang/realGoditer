@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -23,11 +24,19 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final JwtTokenProvider tokenProvider;
     private final ObjectMapper objectMapper;
     private final UserRepository userRepository;
+    private final String signupUrl;
+    private final String homeUrl;
 
-    public OAuth2AuthenticationSuccessHandler(JwtTokenProvider tokenProvider, ObjectMapper objectMapper, UserRepository userRepository) {
+    public OAuth2AuthenticationSuccessHandler(JwtTokenProvider tokenProvider,
+                                              ObjectMapper objectMapper,
+                                              UserRepository userRepository,
+                                              @Value("${redirect.signup-url}") String signupUrl,
+                                              @Value("${redirect.home-url}") String homeUrl) {
         this.tokenProvider = tokenProvider;
         this.objectMapper = objectMapper;
         this.userRepository = userRepository;
+        this.signupUrl = signupUrl;
+        this.homeUrl = homeUrl;
     }
 
     @Override
@@ -53,9 +62,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String targetUrl;
         if(user.getRole().isInitial()) {
-            targetUrl = "http://localhost:3000/signup";
+            targetUrl = signupUrl;
         } else {
-            targetUrl = "http://localhost:3000/home";
+            targetUrl = homeUrl;
         }
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
