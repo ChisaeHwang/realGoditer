@@ -21,14 +21,17 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private Long pay;
+
     private String provider;
 
     @Builder
-    public User(Long id, String name, String email, String password, Role role, String provider) {
+    public User(Long id, String name, String email, String password, Long pay, Role role, String provider) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.pay = pay;
         this.role = role;
         this.provider = provider;
     }
@@ -41,5 +44,13 @@ public class User {
 
     public String getRoleKey() {
         return this.role.getKey();
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public void setPay(Long pay) {
+        this.pay = pay;
     }
 }
