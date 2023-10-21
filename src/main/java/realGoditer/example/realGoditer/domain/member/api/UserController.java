@@ -20,8 +20,6 @@ import realGoditer.example.realGoditer.global.config.jwt.JwtTokenProvider;
 @Slf4j
 public class UserController {
 
-    private final JwtTokenProvider jwtTokenProvider;
-
     private final UserService userService;
 
 
