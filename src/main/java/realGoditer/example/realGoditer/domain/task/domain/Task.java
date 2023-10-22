@@ -17,9 +17,12 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
     private double videoLength;
     private double incentiveAmount;
     private LocalDate startDate;
+
+    private String creator;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status;  // enum TaskStatus { IN_PROGRESS, COMPLETED }
@@ -29,18 +32,49 @@ public class Task {
     private TaskList taskList;
 
     // Protected constructor for the factory method
-    protected Task(double videoLength, double incentiveAmount, LocalDate startDate, TaskList taskList) {
+    protected Task(
+            String name,
+            double videoLength,
+            double incentiveAmount,
+            LocalDate startDate,
+            String creator,
+            TaskList taskList) {
+        this.name = name;
         this.videoLength = videoLength;
         this.incentiveAmount = incentiveAmount;
         this.startDate = startDate;
+        this.creator = creator;
         this.taskList = taskList;
         this.status = TaskStatus.IN_PROGRESS;
     }
 
     // Static factory method
-    public static Task from(double videoLength, double incentiveAmount, LocalDate startDate, TaskList taskList) {
-        return new Task(videoLength, incentiveAmount, startDate, taskList);
+    public static Task from(
+            String name,
+            double videoLength,
+            double incentiveAmount,
+            LocalDate startDate,
+            String creator,
+            TaskList taskList) {
+        return new Task(
+                name,
+                videoLength,
+                incentiveAmount,
+                startDate,
+                creator,
+                taskList);
     }
 
-    // 생략: Setter, 기타 메서드...
+    public void taskUpdate(
+            String name,
+            Double videoLength,
+            Double incentiveAmount,
+            LocalDate startDate,
+            TaskStatus status) {
+        this.name = name;
+        this.videoLength = videoLength;
+        this.incentiveAmount = incentiveAmount;
+        this.startDate = startDate;
+        this.status = status;
+    }
 }

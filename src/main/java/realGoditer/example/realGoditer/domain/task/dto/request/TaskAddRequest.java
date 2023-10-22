@@ -10,10 +10,14 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TaskAddRequest {
 
+    private String name;
     private double videoLength;
     private double incentiveAmount;
 
-    public static TaskAddRequest of(final double videoLength, final double incentiveAmount) {
-        return new TaskAddRequest(videoLength, incentiveAmount);
+    public static TaskAddRequest of(
+            final String name,
+            final double videoLength,
+            final double incentiveAmount) {
+        return new TaskAddRequest(name, videoLength, incentiveAmount);
     }
 }

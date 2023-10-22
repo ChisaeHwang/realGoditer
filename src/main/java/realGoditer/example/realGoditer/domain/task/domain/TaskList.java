@@ -36,14 +36,23 @@ public class TaskList {
         this.user = user;
     }
 
+    protected TaskList(int year, int month) {
+        this.year = year;
+        this.month = month;
+    }
+
     // Static factory method
     public static TaskList from(int year, int month, User user) {
         return new TaskList(year, month, user);
+    }
+
+    public static TaskList from(int year, int month) {
+        return new TaskList(year, month);
     }
 
     public void addTask(Task task) {
         tasks.add(task);
     }
 
-    // 생략: 기타 메서드...
+
 }
