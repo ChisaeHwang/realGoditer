@@ -8,6 +8,8 @@ public interface  TaskService {
 
     Task addTaskToTaskList(TaskAddRequest request, Long userId);
 
+    Task getTask(Long taskId, Long userId);
+
     void deleteTask(Long taskId, Long userId);
 
     Task updateTask(Long taskId, TaskUpdateRequest request, Long userId);

@@ -49,6 +49,21 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
+    public Task getTask(Long taskId, Long userId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new NoSuchElementException("Task with ID " + taskId + " doesn't exist."));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("doesn't exist user"));
+
+        if (!task.getCreator().equals(user.getName())) {
+            throw new UnauthorizedException("Only the creator of the task can delete it."); // UnauthorizedException는 적절한 예외 처리 클래스를 사용하거나 직접 정의해야 합니다.
+        }
+
+        return task;
+    }
+
+    @Override
     public void deleteTask(Long taskId, Long userId) {
         // taskId를 사용하여 작업을 찾습니다.
         Task task = taskRepository.findById(taskId)

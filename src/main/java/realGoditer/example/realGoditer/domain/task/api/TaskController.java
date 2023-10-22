@@ -60,6 +60,19 @@ public class TaskController {
     }
 
     @Member
+    @GetMapping("/{taskId}")
+    public ApiResponse<TaskResponse> getTask(
+            @Authenticated AuthPrincipal authPrincipal,
+            @PathVariable Long taskId
+    ) {
+
+        Task task = taskService.getTask(taskId, authPrincipal.getId());
+
+        return ApiResponse.success(TaskResponse.from(task), 200);
+    }
+
+
+    @Member
     @PostMapping("/update/{taskId}")
     public ApiResponse<TaskResponse> updateTask(
             @Authenticated AuthPrincipal authPrincipal,
