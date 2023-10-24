@@ -8,13 +8,19 @@ import realGoditer.example.realGoditer.domain.member.domain.User;
 import realGoditer.example.realGoditer.domain.task.dao.TaskRepository;
 import realGoditer.example.realGoditer.domain.task.domain.Task;
 import realGoditer.example.realGoditer.domain.task.domain.TaskList;
+import realGoditer.example.realGoditer.domain.task.dto.request.CalculateRequest;
 import realGoditer.example.realGoditer.domain.task.dto.request.TaskAddRequest;
 import realGoditer.example.realGoditer.domain.task.dto.request.TaskUpdateRequest;
+import realGoditer.example.realGoditer.domain.task.dto.response.CalculateResponse;
+import realGoditer.example.realGoditer.domain.task.util.SalaryCalculator;
 import realGoditer.example.realGoditer.global.exception.UnauthorizedException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +67,14 @@ public class TaskServiceImpl implements TaskService{
         }
 
         return task;
+    }
+
+    @Override
+    public List<CalculateResponse> getCalculate(CalculateRequest request) {
+        List<User> userList = userRepository.findAll();
+        return userList.stream()
+                .map(user -> SalaryCalculator.calculateForUser(user, request, taskRepository))
+                .collect(Collectors.toList());
     }
 
     @Override

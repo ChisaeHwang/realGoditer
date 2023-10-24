@@ -10,8 +10,10 @@ import realGoditer.example.realGoditer.domain.member.annotation.Member;
 import realGoditer.example.realGoditer.domain.member.domain.AuthPrincipal;
 import realGoditer.example.realGoditer.domain.task.domain.Task;
 import realGoditer.example.realGoditer.domain.task.domain.TaskList;
+import realGoditer.example.realGoditer.domain.task.dto.request.CalculateRequest;
 import realGoditer.example.realGoditer.domain.task.dto.request.TaskAddRequest;
 import realGoditer.example.realGoditer.domain.task.dto.request.TaskUpdateRequest;
+import realGoditer.example.realGoditer.domain.task.dto.response.CalculateResponse;
 import realGoditer.example.realGoditer.domain.task.dto.response.TaskAddResponse;
 import realGoditer.example.realGoditer.domain.task.dto.response.TaskListResponse;
 import realGoditer.example.realGoditer.domain.task.dto.response.TaskResponse;
@@ -69,6 +71,14 @@ public class TaskController {
         Task task = taskService.getTask(taskId, authPrincipal.getId());
 
         return ApiResponse.success(TaskResponse.from(task), 200);
+    }
+
+    @GetMapping("/calculate")
+    public ApiResponse<List<CalculateResponse>> getCalculate(
+            @Valid @RequestBody final CalculateRequest request
+    ) {
+        List<CalculateResponse> responses = taskService.getCalculate(request);
+        return ApiResponse.success(responses, 200);
     }
 
 

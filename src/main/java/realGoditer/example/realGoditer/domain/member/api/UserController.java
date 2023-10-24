@@ -12,7 +12,6 @@ import realGoditer.example.realGoditer.domain.member.domain.User;
 import realGoditer.example.realGoditer.domain.member.dto.request.SignupRequest;
 import realGoditer.example.realGoditer.domain.member.dto.response.SignupResponse;
 import realGoditer.example.realGoditer.domain.member.service.UserService;
-import realGoditer.example.realGoditer.global.config.jwt.JwtTokenProvider;
 import realGoditer.example.realGoditer.global.dto.ApiResponse;
 
 @RestController
