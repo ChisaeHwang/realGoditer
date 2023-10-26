@@ -12,6 +12,7 @@ import realGoditer.example.realGoditer.domain.task.domain.Task;
 import realGoditer.example.realGoditer.domain.task.domain.TaskList;
 import realGoditer.example.realGoditer.domain.task.dto.request.CalculateRequest;
 import realGoditer.example.realGoditer.domain.task.dto.request.TaskAddRequest;
+import realGoditer.example.realGoditer.domain.task.dto.request.TaskCompleteRequest;
 import realGoditer.example.realGoditer.domain.task.dto.request.TaskUpdateRequest;
 import realGoditer.example.realGoditer.domain.task.dto.response.CalculateResponse;
 import realGoditer.example.realGoditer.domain.task.dto.response.TaskAddResponse;
@@ -73,6 +74,11 @@ public class TaskController {
         return ApiResponse.success(TaskResponse.from(task), 200);
     }
 
+
+    /**
+     * 정산 관련
+     */
+
     @PostMapping("/calculate")
     public ApiResponse<List<CalculateResponse>> getCalculate(
             @Valid @RequestBody final CalculateRequest request
@@ -81,6 +87,17 @@ public class TaskController {
         return ApiResponse.success(responses, 200);
     }
 
+
+    @Member
+    @PostMapping("/complete/{taskId}")
+    public ApiResponse<TaskResponse> completeTask(
+            @Authenticated AuthPrincipal authPrincipal,
+            @PathVariable Long taskId,
+            @Valid @RequestBody final TaskCompleteRequest request) {
+
+
+        return ApiResponse.success(null, 200);
+    }
 
     @Member
     @PostMapping("/update/{taskId}")
