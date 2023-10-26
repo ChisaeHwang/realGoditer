@@ -41,12 +41,20 @@ public class TaskList {
         this.month = month;
     }
 
-    // Static factory method
-    public static TaskList from(int year, int month, User user) {
+    public static TaskList empty() {
+        return new TaskList();
+    }
+
+    public static TaskList from(
+            int year,
+            int month,
+            User user) {
         return new TaskList(year, month, user);
     }
 
-    public static TaskList from(int year, int month) {
+    public static TaskList from(
+            int year,
+            int month) {
         return new TaskList(year, month);
     }
 

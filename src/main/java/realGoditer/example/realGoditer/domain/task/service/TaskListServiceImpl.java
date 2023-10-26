@@ -57,6 +57,12 @@ public class TaskListServiceImpl implements TaskListService {
     }
 
     @Override
+    public TaskList getTaskListByYearAndMonth(int year, int month) {
+        return taskListRepository.findByYearAndMonth(year, month)
+                .orElse(TaskList.empty());
+    }
+
+    @Override
     public List<TaskList> getAllTaskLists() {
         return taskListRepository.findAll();
     }

@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class CalculateRequest {
 
-    private Long taskListId;
-
-
+    private Integer month;
+    private Integer year;
 
 }

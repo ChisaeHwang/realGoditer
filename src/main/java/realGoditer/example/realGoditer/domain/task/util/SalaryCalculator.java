@@ -10,15 +10,22 @@ import java.util.List;
 
 public class SalaryCalculator {
 
-    public static CalculateResponse calculateForUser(User user, CalculateRequest request, TaskRepository taskRepository) {
-        List<Task> tasksForUser = taskRepository.findByCreatorAndTaskListId(user.getName(), request.getTaskListId());
+    public static CalculateResponse calculateForUser(User user, Long taskId, TaskRepository taskRepository) {
+        List<Task> tasksForUser = taskRepository.findByCreatorAndTaskListId(user.getName(), taskId);
 
         double totalVideoLength = tasksForUser.stream().mapToDouble(Task::getVideoLength).sum();
         double totalIncentive = tasksForUser.stream().mapToDouble(Task::getIncentiveAmount).sum();
 
         double monthlySalary = (totalVideoLength * user.getPay()) + totalIncentive;
-        double deductedAmount = monthlySalary * 0.033;
-        double netMonthlySalary = monthlySalary - deductedAmount;
+
+        double rawIncomeTax = monthlySalary * 0.03;
+        double incomeTax = Math.floor(rawIncomeTax / 10) * 10;  // 1의 자리수를 제거
+
+        double rawLocalTax = monthlySalary * 0.003;
+        double localTax = Math.floor(rawLocalTax / 10) * 10;  // 1의 자리수를 제거
+
+        double totalDeduction = incomeTax + localTax;
+        double netMonthlySalary = monthlySalary - totalDeduction;
 
         return CalculateResponse.from(
                 user.getName(),
@@ -26,9 +33,11 @@ public class SalaryCalculator {
                 user.getPay(),
                 totalIncentive,
                 monthlySalary,
-                deductedAmount,
+                totalDeduction,
                 netMonthlySalary
         );
     }
 }
+
+
 

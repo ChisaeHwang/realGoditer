@@ -73,7 +73,7 @@ public class TaskController {
         return ApiResponse.success(TaskResponse.from(task), 200);
     }
 
-    @GetMapping("/calculate")
+    @PostMapping("/calculate")
     public ApiResponse<List<CalculateResponse>> getCalculate(
             @Valid @RequestBody final CalculateRequest request
     ) {

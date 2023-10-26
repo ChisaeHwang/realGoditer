@@ -72,9 +72,13 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public List<CalculateResponse> getCalculate(CalculateRequest request) {
         List<User> userList = userRepository.findAll();
+
+        TaskList list = taskListService.getTaskListByYearAndMonth(request.getYear(), request.getMonth());
+
         return userList.stream()
-                .map(user -> SalaryCalculator.calculateForUser(user, request, taskRepository))
+                .map(user -> SalaryCalculator.calculateForUser (user, list.getId(), taskRepository))
                 .collect(Collectors.toList());
+
     }
 
     @Override

@@ -15,4 +15,6 @@ public interface TaskListService {
 
     List<TaskList> getAllTaskLists();
 
+    TaskList getTaskListByYearAndMonth(int year, int month);
+
 }
