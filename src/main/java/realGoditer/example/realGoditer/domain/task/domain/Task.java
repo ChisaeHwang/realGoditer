@@ -21,6 +21,7 @@ public class Task {
     private double videoLength;
     private double incentiveAmount;
     private LocalDate startDate;
+    private LocalDate endDate;
 
     private String creator;
 
@@ -37,12 +38,14 @@ public class Task {
             double videoLength,
             double incentiveAmount,
             LocalDate startDate,
+            LocalDate endDate,
             String creator,
             TaskList taskList) {
         this.name = name;
         this.videoLength = videoLength;
         this.incentiveAmount = incentiveAmount;
         this.startDate = startDate;
+        this.endDate = endDate;
         this.creator = creator;
         this.taskList = taskList;
         this.status = TaskStatus.IN_PROGRESS;
@@ -54,6 +57,7 @@ public class Task {
             double videoLength,
             double incentiveAmount,
             LocalDate startDate,
+            LocalDate endDate,
             String creator,
             TaskList taskList) {
         return new Task(
@@ -61,6 +65,7 @@ public class Task {
                 videoLength,
                 incentiveAmount,
                 startDate,
+                endDate,
                 creator,
                 taskList);
     }
@@ -70,11 +75,13 @@ public class Task {
             Double videoLength,
             Double incentiveAmount,
             LocalDate startDate,
+            LocalDate endDate,
             TaskStatus status) {
         this.name = name;
         this.videoLength = videoLength;
         this.incentiveAmount = incentiveAmount;
         this.startDate = startDate;
+        this.endDate = endDate;
         this.status = status;
     }
 }

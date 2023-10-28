@@ -17,6 +17,7 @@ public class TaskCompleteRequest {
     private Double videoLength;
     private Double incentiveAmount;
     private LocalDate startDate;
+    private LocalDate endDate;
     private TaskStatus status;
 
 
@@ -25,6 +26,7 @@ public class TaskCompleteRequest {
             final double videoLength,
             final double incentiveAmount,
             final LocalDate startDate,
+            final LocalDate endDate,
             final TaskStatus status
     ) {
         return new TaskCompleteRequest(
@@ -32,6 +34,7 @@ public class TaskCompleteRequest {
                 videoLength,
                 incentiveAmount,
                 startDate,
+                endDate,
                 status);
     }
 

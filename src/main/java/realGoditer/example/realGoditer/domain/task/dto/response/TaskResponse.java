@@ -20,10 +20,10 @@ public class TaskResponse {
     private double videoLength;
     private double incentiveAmount;
     private LocalDate startDate;
+    private LocalDate endDate;
     private String creator;
     private TaskStatus status;
 
-    // 기본 생성자, getter, setter는 생략하겠습니다.
 
     public static TaskResponse from(Task task) {
         TaskResponse response = new TaskResponse();
@@ -32,6 +32,7 @@ public class TaskResponse {
         response.setVideoLength(task.getVideoLength());
         response.setIncentiveAmount(task.getIncentiveAmount());
         response.setStartDate(task.getStartDate());
+        response.setEndDate(task.getEndDate());
         response.setCreator(task.getCreator());
         response.setStatus(task.getStatus());
         return response;
@@ -63,6 +64,10 @@ public class TaskResponse {
 
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
     public void setCreator(String creator) {

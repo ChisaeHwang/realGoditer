@@ -46,6 +46,7 @@ public class TaskServiceImpl implements TaskService{
                 request.getVideoLength(),
                 request.getIncentiveAmount(),
                 LocalDate.now(),
+                LocalDate.now(),
                 user.getName(),
                 taskList);
 
@@ -111,6 +112,7 @@ public class TaskServiceImpl implements TaskService{
                 request.getVideoLength(),
                 request.getIncentiveAmount(),
                 request.getStartDate(),
+                request.getEndDate(),
                 request.getStatus()
         );
 
