@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import realGoditer.example.realGoditer.domain.member.dao.UserRepository;
-import realGoditer.example.realGoditer.domain.member.domain.Role;
 import realGoditer.example.realGoditer.domain.member.domain.User;
+import realGoditer.example.realGoditer.domain.member.dto.request.SignupRequest;
 
 import java.util.NoSuchElementException;
 
@@ -17,13 +17,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User updateUser(Long id, Role role, Long pay) {
+    public User updateUser(Long id, SignupRequest request) {
 
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("doesn't exist user"));
 
-        user.setPay(pay);
-        user.setRole(role);
+        user.setName(request.getName());
+        user.setPay(request.getPay());
+        user.setRole(request.getRole());
 
         return userRepository.save(user);
     }

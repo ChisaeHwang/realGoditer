@@ -12,12 +12,17 @@ import realGoditer.example.realGoditer.domain.member.domain.Role;
 @Getter
 public class SignupRequest {
 
+    private String name;
+
     private Long pay;
 
     private Role role;
 
-    public static SignupRequest of(final Long pay, final Role role) {
-        return new SignupRequest(pay, role);
+    public static SignupRequest of(
+            final String name,
+            final Long pay,
+            final Role role) {
+        return new SignupRequest(name, pay, role);
     }
 
 

@@ -71,4 +71,8 @@ public class User {
     public void setPay(Long pay) {
         this.pay = pay;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
