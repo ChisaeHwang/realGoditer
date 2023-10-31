@@ -42,7 +42,7 @@ cors:
 
 redirect:
   signup-url: http://localhost:3000/signup
-  home-url : http://localhost:3000/home
+  home-url : http://localhost:3000/main
 
 
 
