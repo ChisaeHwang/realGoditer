@@ -11,6 +11,7 @@ import realGoditer.example.realGoditer.domain.member.domain.AuthPrincipal;
 import realGoditer.example.realGoditer.domain.member.domain.User;
 import realGoditer.example.realGoditer.domain.member.dto.request.SignupRequest;
 import realGoditer.example.realGoditer.domain.member.dto.response.SignupResponse;
+import realGoditer.example.realGoditer.domain.member.dto.response.UserResponse;
 import realGoditer.example.realGoditer.domain.member.service.UserService;
 import realGoditer.example.realGoditer.global.dto.ApiResponse;
 
@@ -24,10 +25,10 @@ public class UserController {
 
 
     @Member
-    @GetMapping("/getUserEmail")
-    public ResponseEntity<String> getUserEmail(@Authenticated AuthPrincipal authPrincipal) {
-        log.info("토큰 메일" + authPrincipal.getEmail());
-        return ResponseEntity.ok(authPrincipal.getEmail());
+    @GetMapping("/user")
+    public ApiResponse<UserResponse> getUser(@Authenticated AuthPrincipal authPrincipal) {
+        User user = userService.findUser(authPrincipal.getId());
+        return ApiResponse.success(UserResponse.of(user), 200);
     }
 
     @Member
@@ -39,7 +40,6 @@ public class UserController {
         User user = userService.updateUser(authPrincipal.getId(), request);
         return ApiResponse.success(SignupResponse.of(user), 200);
     }
-
 
 
 }

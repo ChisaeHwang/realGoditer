@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TaskListService {
 
-    public TaskList findMonthlyTaskList();
+    TaskList findMonthlyTaskList(int year, int month);
 
     TaskList findMonthlyTaskListForUser(User user);
 

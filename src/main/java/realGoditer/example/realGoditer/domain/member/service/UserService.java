@@ -8,4 +8,6 @@ public interface UserService {
 
     User updateUser(Long id, SignupRequest request);
 
+    User findUser(Long id);
+
 }

@@ -12,4 +12,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Query("SELECT t FROM Task t WHERE t.creator = :creator AND t.taskList.id = :taskListId")
     List<Task> findByCreatorAndTaskListId(@Param("creator") String creator, @Param("taskListId") Long taskListId);
+
+
+    List<Task> findByTaskListId(Long taskListId);
 }

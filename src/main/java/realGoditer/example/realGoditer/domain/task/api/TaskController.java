@@ -7,13 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import realGoditer.example.realGoditer.domain.member.annotation.Authenticated;
 import realGoditer.example.realGoditer.domain.member.annotation.Member;
+import realGoditer.example.realGoditer.domain.member.dao.UserRepository;
 import realGoditer.example.realGoditer.domain.member.domain.AuthPrincipal;
+import realGoditer.example.realGoditer.domain.member.domain.User;
 import realGoditer.example.realGoditer.domain.task.domain.Task;
 import realGoditer.example.realGoditer.domain.task.domain.TaskList;
-import realGoditer.example.realGoditer.domain.task.dto.request.CalculateRequest;
-import realGoditer.example.realGoditer.domain.task.dto.request.TaskAddRequest;
-import realGoditer.example.realGoditer.domain.task.dto.request.TaskCompleteRequest;
-import realGoditer.example.realGoditer.domain.task.dto.request.TaskUpdateRequest;
+import realGoditer.example.realGoditer.domain.task.dto.request.*;
 import realGoditer.example.realGoditer.domain.task.dto.response.CalculateResponse;
 import realGoditer.example.realGoditer.domain.task.dto.response.TaskAddResponse;
 import realGoditer.example.realGoditer.domain.task.dto.response.TaskListResponse;
@@ -32,25 +31,31 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
-
+    private final UserRepository userRepository;
     private final TaskListService taskListService;
 
     @Member
     @PostMapping("/add")
-    public ApiResponse<TaskAddResponse> addTask(@Authenticated AuthPrincipal authPrincipal,
-                                        @Valid @RequestBody final TaskAddRequest request) {
+    public ApiResponse<TaskAddResponse> addTask(
+            @Authenticated AuthPrincipal authPrincipal,
+            @Valid @RequestBody final TaskAddRequest request) {
 
         Task task = taskService.addTaskToTaskList(request, authPrincipal.getId());
 
         return ApiResponse.success(TaskAddResponse.from(task), 200);
     }
 
-    @GetMapping("/all")
-    public ApiResponse<List<TaskListResponse>> getAllTask() {
+    @PostMapping("/all")
+    public ApiResponse<List<TaskResponse>> getAllTask(
+            @RequestBody final TaskRequest request
+    ) {
 
-        List<TaskList> lists = taskListService.getAllTaskLists();
 
-        return ApiResponse.success(TaskListResponse.fromList(lists), 200);
+        List<Task> lists = taskService.getMonthTask(request);
+
+        List<User> users = userRepository.findAll();
+
+        return ApiResponse.success(TaskResponse.fromList(lists, users), 200);
     }
 
     @GetMapping("/all/user")

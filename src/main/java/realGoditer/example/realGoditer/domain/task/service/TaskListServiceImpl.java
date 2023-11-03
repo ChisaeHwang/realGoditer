@@ -23,13 +23,11 @@ public class TaskListServiceImpl implements TaskListService {
     private final UserRepository userRepository;
 
     @Override
-    public TaskList findMonthlyTaskList() {
-        int currentYear = LocalDate.now().getYear();
-        int currentMonth = LocalDate.now().getMonthValue();
+    public TaskList findMonthlyTaskList(int year, int month) {
 
-        return taskListRepository.findByYearAndMonth(currentYear, currentMonth)
+        return taskListRepository.findByYearAndMonth(year, month)
                 .orElseGet(() -> {
-                    TaskList newTaskList = TaskList.from(currentYear, currentMonth);
+                    TaskList newTaskList = TaskList.from(year, month);
                     return taskListRepository.save(newTaskList);
                 });
     }

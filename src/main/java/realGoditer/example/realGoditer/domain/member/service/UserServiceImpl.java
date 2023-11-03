@@ -28,4 +28,13 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.save(user);
     }
+
+
+    @Override
+    public User findUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("doesn't exist user"));
+
+        return user;
+    }
 }

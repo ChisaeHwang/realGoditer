@@ -10,6 +10,7 @@ import realGoditer.example.realGoditer.domain.task.domain.Task;
 import realGoditer.example.realGoditer.domain.task.domain.TaskList;
 import realGoditer.example.realGoditer.domain.task.dto.request.CalculateRequest;
 import realGoditer.example.realGoditer.domain.task.dto.request.TaskAddRequest;
+import realGoditer.example.realGoditer.domain.task.dto.request.TaskRequest;
 import realGoditer.example.realGoditer.domain.task.dto.request.TaskUpdateRequest;
 import realGoditer.example.realGoditer.domain.task.dto.response.CalculateResponse;
 import realGoditer.example.realGoditer.domain.task.util.SalaryCalculator;
@@ -39,11 +40,14 @@ public class TaskServiceImpl implements TaskService{
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("doesn't exist user"));
 
-        TaskList taskList = taskListService.findMonthlyTaskList();
+        int currentYear = LocalDate.now().getYear();
+        int currentMonth = LocalDate.now().getMonthValue();
+
+        TaskList taskList = taskListService.findMonthlyTaskList(currentYear, currentMonth);
 
         Task task = Task.from(
                 request.getName(),
-                request.getVideoLength(),
+                0,
                 request.getIncentiveAmount(),
                 LocalDate.now(),
                 LocalDate.now(),
@@ -54,6 +58,16 @@ public class TaskServiceImpl implements TaskService{
 
         return taskRepository.save(task);
     }
+
+    @Override
+    public List<Task> getMonthTask(TaskRequest request) {
+        TaskList list = taskListService.getTaskListByYearAndMonth(request.getYear(), request.getMonth());
+
+        List<Task> tasks = taskRepository.findByTaskListId(list.getId());
+
+        return tasks;
+    }
+
 
     @Override
     public Task getTask(Long taskId, Long userId) {
