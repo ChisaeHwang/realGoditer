@@ -13,16 +13,15 @@ import realGoditer.example.realGoditer.domain.member.domain.User;
 import realGoditer.example.realGoditer.domain.task.domain.Task;
 import realGoditer.example.realGoditer.domain.task.domain.TaskList;
 import realGoditer.example.realGoditer.domain.task.dto.request.*;
-import realGoditer.example.realGoditer.domain.task.dto.response.CalculateResponse;
-import realGoditer.example.realGoditer.domain.task.dto.response.TaskAddResponse;
-import realGoditer.example.realGoditer.domain.task.dto.response.TaskListResponse;
-import realGoditer.example.realGoditer.domain.task.dto.response.TaskResponse;
+import realGoditer.example.realGoditer.domain.task.dto.response.*;
 import realGoditer.example.realGoditer.domain.task.service.TaskListService;
 import realGoditer.example.realGoditer.domain.task.service.TaskService;
 import realGoditer.example.realGoditer.global.dto.ApiResponse;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/task")
@@ -58,6 +57,19 @@ public class TaskController {
         return ApiResponse.success(TaskResponse.fromList(lists, users), 200);
     }
 
+    @PostMapping("/calendar")
+    public ApiResponse<List<TaskResponse>> getCalendar(
+            @RequestBody final TaskRequest request
+    ) {
+
+
+        List<Task> lists = taskService.getMonthTask(request);
+
+        List<User> users = userRepository.findAll();
+
+        return ApiResponse.success(TaskResponse.fromList(lists, users), 200);
+    }
+
     @GetMapping("/all/user")
     public ApiResponse<List<TaskListResponse>> getAllTask(
             @Authenticated AuthPrincipal authPrincipal) {
@@ -69,14 +81,16 @@ public class TaskController {
 
     @Member
     @GetMapping("/{taskId}")
-    public ApiResponse<TaskResponse> getTask(
+    public ApiResponse<TaskUpdateResponse> getTask(
             @Authenticated AuthPrincipal authPrincipal,
             @PathVariable Long taskId
     ) {
-
         Task task = taskService.getTask(taskId, authPrincipal.getId());
 
-        return ApiResponse.success(TaskResponse.from(task), 200);
+        User user = userRepository.findById(authPrincipal.getId())
+                .orElseThrow(() -> new NoSuchElementException("doesn't exist user"));
+
+        return ApiResponse.success(TaskUpdateResponse.from(task, user), 200);
     }
 
 

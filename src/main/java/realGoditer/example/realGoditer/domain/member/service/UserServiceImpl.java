@@ -7,6 +7,7 @@ import realGoditer.example.realGoditer.domain.member.dao.UserRepository;
 import realGoditer.example.realGoditer.domain.member.domain.User;
 import realGoditer.example.realGoditer.domain.member.dto.request.SignupRequest;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -36,5 +37,10 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NoSuchElementException("doesn't exist user"));
 
         return user;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

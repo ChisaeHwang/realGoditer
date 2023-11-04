@@ -15,6 +15,9 @@ import realGoditer.example.realGoditer.domain.member.dto.response.UserResponse;
 import realGoditer.example.realGoditer.domain.member.service.UserService;
 import realGoditer.example.realGoditer.global.dto.ApiResponse;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -30,6 +33,16 @@ public class UserController {
         User user = userService.findUser(authPrincipal.getId());
         return ApiResponse.success(UserResponse.of(user), 200);
     }
+
+    @GetMapping("/user/all")
+    public ApiResponse<List<UserResponse>> getAllUser() {
+        List<UserResponse> responses = userService.findAll().stream()
+                .map(UserResponse::of) // User 객체를 UserResponse 객체로 변환
+                .collect(Collectors.toList()); // 스트림을 리스트로 수집
+
+        return ApiResponse.success(responses, 200);
+    }
+
 
     @Member
     @PostMapping("/signup")

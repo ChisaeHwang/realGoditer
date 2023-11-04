@@ -35,7 +35,7 @@ logging.level:
 
 jwt:
   secret-key: zV2GZJoWf5RpGhS1nX9cFHoaiLml12pREYOsT4YrTkE=
-  expire-length: 3600000
+  expire-length: 31536000000
 
 cors:
   allowed-origin: http://localhost:3000
@@ -43,6 +43,13 @@ cors:
 redirect:
   signup-url: http://localhost:3000/signup
   home-url : http://localhost:3000/main
+
+app:
+  database:
+    seeding:
+      enabled: true
+
+
 
 
 

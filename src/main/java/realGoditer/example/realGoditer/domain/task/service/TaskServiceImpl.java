@@ -49,6 +49,7 @@ public class TaskServiceImpl implements TaskService{
                 request.getName(),
                 0,
                 request.getIncentiveAmount(),
+                user.getPay(),
                 LocalDate.now(),
                 LocalDate.now(),
                 user.getName(),
@@ -121,13 +122,18 @@ public class TaskServiceImpl implements TaskService{
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NoSuchElementException("Task with ID " + taskId + " doesn't exist."));
 
+
+
         task.taskUpdate(
                 request.getName(),
                 request.getVideoLength(),
                 request.getIncentiveAmount(),
                 request.getStartDate(),
                 request.getEndDate(),
-                request.getStatus()
+                request.getStatus(),
+                request.getPay(),
+                request.getCreator(),
+                request.getRemarks()
         );
 
         return taskRepository.save(task);

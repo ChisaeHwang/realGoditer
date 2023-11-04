@@ -18,6 +18,7 @@ public class TaskAddResponse {
     private String name;
     private double videoLength;
     private double incentiveAmount;
+    private double pay;
     private LocalDate startDate;
     private TaskStatus status;
     private String creator;
@@ -30,6 +31,7 @@ public class TaskAddResponse {
         this.incentiveAmount = task.getIncentiveAmount();
         this.startDate = task.getStartDate();
         this.creator = task.getCreator();
+        this.pay = task.getTempPay();
         this.status = task.getStatus();
         this.taskListId = task.getTaskList().getId();
     }

@@ -29,7 +29,7 @@ public class TaskListResponse {
         response.setId(taskList.getId());
         response.setYear(taskList.getYear());
         response.setMonth(taskList.getMonth());
-        response.setTasks(TaskResponse.fromList(taskList.getTasks(), null));
+        response.setTasks(TaskResponse.fromList(taskList.getTasks()));
         return response;
     }
 

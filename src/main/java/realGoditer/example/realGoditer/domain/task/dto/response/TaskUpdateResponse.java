@@ -18,68 +18,39 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-public class TaskResponse {
+public class TaskUpdateResponse {
+
     private Long id;
     private String name;
-    private double videoLength;
+    private double videoLengthMinutes;
+    private double videoLengthSeconds;
     private double incentiveAmount;
     private LocalDate startDate;
     private LocalDate endDate;
     private Role role;
+    private double pay;
     private String creator;
     private TaskStatus status;
-    private double pay;
+    private String remark;
 
 
-    public static TaskResponse from(Task task, Role role) {
-        TaskResponse response = new TaskResponse();
+    public static TaskUpdateResponse from(Task task, User user) {
+        TaskUpdateResponse response = new TaskUpdateResponse();
         response.setId(task.getId());
         response.setName(task.getName());
-        response.setVideoLength(task.getVideoLength());
+        response.setVideoLengthMinutes(task.getVideoLength() / 60);
+        response.setVideoLengthSeconds(task.getVideoLength() % 60);
+        response.setPay(task.getTempPay());
         response.setIncentiveAmount(task.getIncentiveAmount());
         response.setStartDate(task.getStartDate());
         response.setEndDate(task.getEndDate());
-        response.setPay(task.getTempPay());
-        response.setRole(role);
+        response.setRole(user.getRole());
         response.setCreator(task.getCreator());
         response.setStatus(task.getStatus());
+        response.setRemark(task.getRemark());
         return response;
     }
 
-    public static TaskResponse from(Task task) {
-        TaskResponse response = new TaskResponse();
-        response.setId(task.getId());
-        response.setName(task.getName());
-        response.setVideoLength(task.getVideoLength());
-        response.setIncentiveAmount(task.getIncentiveAmount());
-        response.setStartDate(task.getStartDate());
-        response.setEndDate(task.getEndDate());
-        response.setPay(task.getTempPay());
-        response.setCreator(task.getCreator());
-        response.setStatus(task.getStatus());
-        return response;
-    }
-
-    public static List<TaskResponse> fromList(List<Task> tasks, List<User> users) {
-        // User 목록을 Map으로 변환하여 검색 속도 향상
-        Map<String, Role> userRoleMap = users.stream()
-                .collect(Collectors.toMap(User::getName, User::getRole));
-
-        // Task와 User를 매핑하여 TaskResponse 생성
-        List<TaskResponse> responses = tasks.stream()
-                .filter(task -> userRoleMap.containsKey(task.getCreator()))
-                .map(task -> from(task, userRoleMap.get(task.getCreator())))
-                .collect(Collectors.toList());
-        return responses;
-    }
-
-    public static List<TaskResponse> fromList(List<Task> tasks) {
-        List<TaskResponse> responses = new ArrayList<>();
-        for (Task task : tasks) {
-                responses.add(from(task));
-        }
-        return responses;
-    }
 
     public void setId(Long id) {
         this.id = id;
@@ -87,10 +58,6 @@ public class TaskResponse {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setVideoLength(double videoLength) {
-        this.videoLength = videoLength;
     }
 
     public void setIncentiveAmount(double incentiveAmount) {
@@ -117,8 +84,19 @@ public class TaskResponse {
         this.status = status;
     }
 
+    public void setVideoLengthMinutes(double videoLengthMinutes) {
+        this.videoLengthMinutes = videoLengthMinutes;
+    }
+
+    public void setVideoLengthSeconds(double videoLengthSeconds) {
+        this.videoLengthSeconds = videoLengthSeconds;
+    }
+
     public void setPay(double pay) {
         this.pay = pay;
     }
-}
 
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+}

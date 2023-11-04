@@ -16,7 +16,12 @@ public class SalaryCalculator {
         double totalVideoLength = tasksForUser.stream().mapToDouble(Task::getVideoLength).sum();
         double totalIncentive = tasksForUser.stream().mapToDouble(Task::getIncentiveAmount).sum();
 
-        double monthlySalary = (totalVideoLength * user.getPay()) + totalIncentive;
+        double totalVideoLengthPayProduct = tasksForUser.stream()
+                .mapToDouble(task -> task.getVideoLength() * task.getTempPay()) // 각 Task의 videoLength와 pay를 곱함
+                .sum();
+        // 만약 user 페이랑 다른 페이가 있을 경우 종합 영상 길이에서 영상 길이만큼 뺴고 따로 계산 이후 인센티브로
+
+        double monthlySalary = (totalVideoLength / 60) * user.getPay() + totalIncentive;
 
         double rawIncomeTax = monthlySalary * 0.03;
         double incomeTax = Math.floor(rawIncomeTax / 10) * 10;  // 1의 자리수를 제거
