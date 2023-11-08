@@ -8,10 +8,8 @@ import realGoditer.example.realGoditer.domain.member.domain.User;
 import realGoditer.example.realGoditer.domain.task.dao.TaskRepository;
 import realGoditer.example.realGoditer.domain.task.domain.Task;
 import realGoditer.example.realGoditer.domain.task.domain.TaskList;
-import realGoditer.example.realGoditer.domain.task.dto.request.CalculateRequest;
-import realGoditer.example.realGoditer.domain.task.dto.request.TaskAddRequest;
-import realGoditer.example.realGoditer.domain.task.dto.request.TaskRequest;
-import realGoditer.example.realGoditer.domain.task.dto.request.TaskUpdateRequest;
+import realGoditer.example.realGoditer.domain.task.dto.request.*;
+import realGoditer.example.realGoditer.domain.task.dto.response.CalculateDetailResponse;
 import realGoditer.example.realGoditer.domain.task.dto.response.CalculateResponse;
 import realGoditer.example.realGoditer.domain.task.util.SalaryCalculator;
 import realGoditer.example.realGoditer.global.exception.UnauthorizedException;
@@ -98,6 +96,18 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
+    public List<CalculateDetailResponse> getDetailCalculate(CalculateDetailRequest request) {
+        User user = userRepository.findByName(request.getUserName())
+                .orElseThrow(() -> new NoSuchElementException("Task with Name " + request.getUserName() + " doesn't exist."));
+
+        TaskList list = taskListService.getTaskListByYearAndMonth(request.getYear(), request.getMonth());
+
+        List<Task> tasksForUser = taskRepository.findByCreatorAndTaskListId(user.getName(), list.getId());
+
+        return CalculateDetailResponse.fromList(tasksForUser);
+    }
+
+    @Override
     public void deleteTask(Long taskId, Long userId) {
         // taskId를 사용하여 작업을 찾습니다.
         Task task = taskRepository.findById(taskId)
@@ -122,7 +132,10 @@ public class TaskServiceImpl implements TaskService{
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new NoSuchElementException("Task with ID " + taskId + " doesn't exist."));
 
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("doesn't exist user"));
 
+        user.setRole(request.getRole());
 
         task.taskUpdate(
                 request.getName(),
@@ -139,4 +152,26 @@ public class TaskServiceImpl implements TaskService{
         return taskRepository.save(task);
     }
 
+    @Override
+    public Task completeTask(Long taskId, TaskCompleteRequest request, Long userId) {
+        // taskId를 사용하여 작업을 찾고, 찾은 작업의 속성을 수정한 후 저장합니다.
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new NoSuchElementException("Task with ID " + taskId + " doesn't exist."));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("doesn't exist user"));
+
+        user.setRole(request.getRole());
+
+
+        task.taskComplete(
+                request.getName(),
+                request.getVideoLength(),
+                request.getIncentiveAmount(),
+                request.getPay(),
+                request.getRemark()
+        );
+
+        return taskRepository.save(task);
+    }
 }

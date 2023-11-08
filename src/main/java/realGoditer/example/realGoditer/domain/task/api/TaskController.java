@@ -70,6 +70,7 @@ public class TaskController {
         return ApiResponse.success(TaskResponse.fromList(lists, users), 200);
     }
 
+
     @GetMapping("/all/user")
     public ApiResponse<List<TaskListResponse>> getAllTask(
             @Authenticated AuthPrincipal authPrincipal) {
@@ -106,6 +107,16 @@ public class TaskController {
         return ApiResponse.success(responses, 200);
     }
 
+    @PostMapping("/calculate/detail")
+    public ApiResponse<List<CalculateDetailResponse>> getTasksByUser(
+            @Valid @RequestBody final CalculateDetailRequest request) {
+
+        List<CalculateDetailResponse> responses = taskService.getDetailCalculate(request);
+
+        return ApiResponse.success(responses, 200);
+    }
+
+
 
     @Member
     @PostMapping("/complete/{taskId}")
@@ -114,8 +125,9 @@ public class TaskController {
             @PathVariable Long taskId,
             @Valid @RequestBody final TaskCompleteRequest request) {
 
+        Task task = taskService.completeTask(taskId, request, authPrincipal.getId());
 
-        return ApiResponse.success(null, 200);
+        return ApiResponse.success(TaskResponse.from(task), 200);
     }
 
     @Member

@@ -93,6 +93,21 @@ public class Task {
         this.remark = remark;
     }
 
+    public void taskComplete(
+            String name,
+            Double videoLength,
+            Double incentiveAmount,
+            Double tempPay,
+            String remark
+    ) {
+        this.name = name;
+        this.videoLength = videoLength;
+        this.incentiveAmount = incentiveAmount;
+        this.tempPay = tempPay;
+        this.remark = remark;
+        this.status = TaskStatus.COMPLETED;
+    }
+
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
