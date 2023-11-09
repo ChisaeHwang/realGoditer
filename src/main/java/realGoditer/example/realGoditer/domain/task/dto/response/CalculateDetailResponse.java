@@ -16,6 +16,7 @@ import java.util.List;
 public class CalculateDetailResponse {
 
     private String taskName;
+    private Double videoLength;
     private LocalDate startDate;
     private LocalDate endDate;
     private double pay;
@@ -25,6 +26,7 @@ public class CalculateDetailResponse {
     public static CalculateDetailResponse from(Task task) {
         CalculateDetailResponse response = new CalculateDetailResponse();
         response.setTaskName(task.getName());
+        response.setVideoLength(task.getVideoLength());
         response.setStartDate(task.getStartDate());
         response.setEndDate(task.getEndDate());
         response.setPay(task.getTempPay());
@@ -46,6 +48,10 @@ public class CalculateDetailResponse {
 
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
+    }
+
+    public void setVideoLength(Double videoLength) {
+        this.videoLength = videoLength;
     }
 
     public void setEndDate(LocalDate endDate) {
