@@ -48,8 +48,6 @@ public class UserController {
     @PostMapping("/signup")
     public ApiResponse<SignupResponse> signupUser(@Authenticated AuthPrincipal authPrincipal,
                                                   @Valid @RequestBody final SignupRequest request) {
-        log.info(String.valueOf(request.getRole()));
-        log.info(String.valueOf(request.getPay()));
         User user = userService.updateUser(authPrincipal.getId(), request);
         return ApiResponse.success(SignupResponse.of(user), 200);
     }
