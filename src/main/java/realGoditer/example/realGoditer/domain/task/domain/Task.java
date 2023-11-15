@@ -81,7 +81,8 @@ public class Task {
             TaskStatus status,
             Double tempPay,
             String creator,
-            String remark) {
+            String remark,
+            TaskList taskList) {
         this.name = name;
         this.videoLength = videoLength;
         this.incentiveAmount = incentiveAmount;
@@ -91,6 +92,7 @@ public class Task {
         this.tempPay = tempPay;
         this.creator = creator;
         this.remark = remark;
+        this.taskList = taskList;
     }
 
     public void taskComplete(
@@ -98,7 +100,9 @@ public class Task {
             Double videoLength,
             Double incentiveAmount,
             Double tempPay,
-            String remark
+            String remark,
+            TaskList taskList
+
     ) {
         this.name = name;
         this.videoLength = videoLength;
@@ -106,6 +110,7 @@ public class Task {
         this.tempPay = tempPay;
         this.remark = remark;
         this.status = TaskStatus.COMPLETED;
+        this.taskList = taskList;
     }
 
     public void setStatus(TaskStatus status) {
@@ -114,5 +119,9 @@ public class Task {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public void setTaskList(TaskList taskList) {
+        this.taskList = taskList;
     }
 }

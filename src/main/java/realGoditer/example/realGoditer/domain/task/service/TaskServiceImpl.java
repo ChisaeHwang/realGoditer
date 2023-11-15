@@ -137,6 +137,11 @@ public class TaskServiceImpl implements TaskService{
 
         user.setRole(request.getRole());
 
+        int currentYear = LocalDate.now().getYear();
+        int currentMonth = request.getEndDate().getMonthValue();
+
+        TaskList taskList = taskListService.findMonthlyTaskList(currentYear, currentMonth);
+
         task.taskUpdate(
                 request.getName(),
                 request.getVideoLength(),
@@ -146,7 +151,8 @@ public class TaskServiceImpl implements TaskService{
                 request.getStatus(),
                 request.getPay(),
                 request.getCreator(),
-                request.getRemarks()
+                request.getRemarks(),
+                taskList
         );
 
         return taskRepository.save(task);
@@ -163,13 +169,18 @@ public class TaskServiceImpl implements TaskService{
 
         user.setRole(request.getRole());
 
+        int currentYear = LocalDate.now().getYear();
+        int currentMonth = LocalDate.now().getMonthValue();
+
+        TaskList taskList = taskListService.findMonthlyTaskList(currentYear, currentMonth);
 
         task.taskComplete(
                 request.getName(),
                 request.getVideoLength(),
                 request.getIncentiveAmount(),
                 request.getPay(),
-                request.getRemark()
+                request.getRemark(),
+                taskList
         );
 
         return taskRepository.save(task);
