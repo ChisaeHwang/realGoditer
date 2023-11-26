@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/goditer?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: 1142
+    url: jdbc:mysql://goditer.cd1lzbyeyukd.ap-northeast-2.rds.amazonaws.com:3306/goditer
+    username: chisae
+    password: dnjswns1142!
     data: classpath:data.sql
     initialization-mode: always
   jpa:
@@ -21,7 +21,7 @@ spring:
           google:
             client-id: 307045080553-ou8bpgc262vfu44bud1ne4qbe0585doc.apps.googleusercontent.com
             client-secret: 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
-            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            redirect-uri: http://goditerapi.xyz/login/oauth2/code/google
             scope:
               - profile
               - email
@@ -38,11 +38,11 @@ jwt:
   expire-length: 31536000000
 
 cors:
-  allowed-origin: http://localhost:3000
+  allowed-origin: https://goditer-front.vercel.app/
 
 redirect:
-  signup-url: http://localhost:3000/signup
-  home-url : http://localhost:3000/main
+  signup-url: https://goditer-front.vercel.app/signup
+  home-url : https://goditer-front.vercel.app/main
 
 app:
   database:
