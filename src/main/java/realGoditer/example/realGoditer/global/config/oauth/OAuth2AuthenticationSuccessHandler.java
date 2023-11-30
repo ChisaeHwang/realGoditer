@@ -17,6 +17,7 @@ import realGoditer.example.realGoditer.domain.member.exception.LoginFailExceptio
 import realGoditer.example.realGoditer.global.config.jwt.JwtTokenProvider;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Component
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
@@ -52,20 +53,13 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // AuthPrincipal을 사용해 토큰 생성
         String token = tokenProvider.generateToken(principalToJson(authPrincipal));
 
-        // JWT 토큰을 쿠키에 설정
-        Cookie jwtCookie = new Cookie("jwt_token", token);
-        jwtCookie.setHttpOnly(false); // true는 JS에서 쿠키에 접근할 수 없도록 설정
-        jwtCookie.setMaxAge(7 * 24 * 60 * 60); // 쿠키 유효 기간을 7일로 설정
-        jwtCookie.setPath("/"); // 쿠키가 전송되는 경로 설정
-        // jwtCookie.setSecure(true); // HTTPS를 사용할 경우 활성화하세요.
-        response.addCookie(jwtCookie);
-
         String targetUrl;
         if(user.getRole().isInitial()) {
-            targetUrl = signupUrl;
+            targetUrl = signupUrl + "?token=" + token;
         } else {
-            targetUrl = homeUrl;
+            targetUrl = homeUrl + "?token=" + token;
         }
+
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 

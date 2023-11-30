@@ -21,7 +21,7 @@ spring:
           google:
             client-id: 307045080553-ou8bpgc262vfu44bud1ne4qbe0585doc.apps.googleusercontent.com
             client-secret: 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
-            redirect-uri: http://goditerapi.xyz/login/oauth2/code/google
+            redirect-uri: https://goditerapi.xyz/login/oauth2/code/google
             scope:
               - profile
               - email
@@ -38,7 +38,7 @@ jwt:
   expire-length: 31536000000
 
 cors:
-  allowed-origin: https://goditer-front.vercel.app/
+  allowed-origin: https://goditer-front.vercel.app
 
 redirect:
   signup-url: https://goditer-front.vercel.app/signup
@@ -48,6 +48,15 @@ app:
   database:
     seeding:
       enabled: true
+
+server:
+  port: 443
+  ssl:
+    enabled: true
+    key-store: classpath:bootsecurity.p12
+    key-store-password: 46881142
+    key-store-type: PKCS12
+    key-alias: bootsecurity
 
 
 

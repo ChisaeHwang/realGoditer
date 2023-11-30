@@ -13,7 +13,7 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        String targetUrl = "http://localhost:3000";
+        String targetUrl = "https://goditer-front.vercel.app";
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 }

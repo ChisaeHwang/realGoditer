@@ -46,12 +46,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry
-                .addMapping("/**")
-                .allowedOrigins("http://localhost:8080", allowedOrigin)
-                .allowedMethods("*");
-        WebMvcConfigurer.super.addCorsMappings(registry);
+        registry.addMapping("/**")
+                .allowedOrigins("https://goditer-front.vercel.app")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
+
 }
 
 
