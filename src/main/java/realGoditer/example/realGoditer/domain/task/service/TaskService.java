@@ -12,6 +12,8 @@ public interface  TaskService {
 
     Task addTaskToTaskList(TaskAddRequest request, Long userId);
 
+    Task addCompTaskToTaskList(TaskAddCompleteRequest request, Long userId);
+
     Task getTask(Long taskId, Long userId);
 
     List<Task> getMonthTask(TaskRequest request);

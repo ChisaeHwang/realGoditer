@@ -37,11 +37,22 @@ public class TaskController {
     @PostMapping("/add")
     public ApiResponse<TaskAddResponse> addTask(
             @Authenticated AuthPrincipal authPrincipal,
+            @Valid @RequestBody final TaskAddCompleteRequest request) {
+
+        Task task = taskService.addCompTaskToTaskList(request, authPrincipal.getId());
+
+        return ApiResponse.success(TaskAddResponse.from(task), 200);
+    }
+
+    @Member
+    @PostMapping("/add/complete")
+    public ApiResponse<TaskResponse> addCompleteTask(
+            @Authenticated AuthPrincipal authPrincipal,
             @Valid @RequestBody final TaskAddRequest request) {
 
         Task task = taskService.addTaskToTaskList(request, authPrincipal.getId());
 
-        return ApiResponse.success(TaskAddResponse.from(task), 200);
+        return ApiResponse.success(TaskResponse.from(task), 200);
     }
 
     @PostMapping("/all")

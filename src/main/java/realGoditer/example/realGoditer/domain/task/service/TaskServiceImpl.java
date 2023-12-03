@@ -8,6 +8,7 @@ import realGoditer.example.realGoditer.domain.member.domain.User;
 import realGoditer.example.realGoditer.domain.task.dao.TaskRepository;
 import realGoditer.example.realGoditer.domain.task.domain.Task;
 import realGoditer.example.realGoditer.domain.task.domain.TaskList;
+import realGoditer.example.realGoditer.domain.task.domain.TaskStatus;
 import realGoditer.example.realGoditer.domain.task.dto.request.*;
 import realGoditer.example.realGoditer.domain.task.dto.response.CalculateDetailResponse;
 import realGoditer.example.realGoditer.domain.task.dto.response.CalculateResponse;
@@ -52,6 +53,44 @@ public class TaskServiceImpl implements TaskService{
                 LocalDate.now(),
                 user.getName(),
                 taskList);
+
+        taskList.addTask(task);
+
+        return taskRepository.save(task);
+    }
+
+    public Task addCompTaskToTaskList(TaskAddCompleteRequest request, Long userId) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("doesn't exist user"));
+
+        int currentYear = LocalDate.now().getYear();
+        int currentMonth = LocalDate.now().getMonthValue();
+
+        TaskList taskList = taskListService.findMonthlyTaskList(currentYear, currentMonth);
+
+        Task task = Task.from(
+                request.getName(),
+                0,
+                request.getIncentiveAmount(),
+                user.getPay(),
+                LocalDate.now(),
+                LocalDate.now(),
+                user.getName(),
+                taskList);
+
+        task.taskUpdate(
+                request.getName(),
+                request.getVideoLength(),
+                request.getIncentiveAmount(),
+                request.getStartDate(),
+                request.getEndDate(),
+                TaskStatus.COMPLETED,
+                request.getPay(),
+                user.getName(),
+                request.getRemark(),
+                taskList
+        );
 
         taskList.addTask(task);
 
