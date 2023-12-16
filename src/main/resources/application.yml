@@ -8,7 +8,7 @@ spring:
     initialization-mode: always
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update #서버 실행시에는 update로 변경
     database-platform: org.hibernate.dialect.MySQL8Dialect
     defer-datasource-initialization: true
     properties:

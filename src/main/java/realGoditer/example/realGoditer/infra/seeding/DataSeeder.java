@@ -38,29 +38,29 @@ public class DataSeeder {
             return;
         }
 
-        // 시드 유저 생성
-        List<User> users = List.of(
-                User.of("조재홍", "userone@example.com", "password1", 0L, Role.EDITOR, "provider1"),
-                User.of("느대", "usertwo@example.com", "password2", 0L, Role.THUMBNAILER, "provider2"),
-                User.of("치피치피", "userthree@example.com", "password3", 0L, Role.EDITOR, "provider3")
-        );
-
-        users.forEach(userRepository::save);
-
-        // 시드 태스크리스트 생성
-        TaskList taskList = TaskList.from(2023, 12, users.get(0));
-        taskListRepository.save(taskList);
-
-
-        Task task1 = Task.from("비디오 편집", 10.0, 100.0, 10000, LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 5), "조재홍", taskList);
-        Task task2 = Task.from("썸네일 디자인", 2.0, 50.0, 10000, LocalDate.of(2023, 12, 3), LocalDate.of(2023, 12, 4), "느대", taskList);
-        Task task3 = Task.from("영상 자막 작업", 5.0, 75.0, 10000, LocalDate.of(2023, 12, 2), LocalDate.of(2023, 12, 7), "치피치피", taskList);
-
-        task3.setStatus(TaskStatus.COMPLETED);
-
-        taskRepository.save(task1);
-        taskRepository.save(task2);
-        taskRepository.save(task3);
+//        // 시드 유저 생성
+//        List<User> users = List.of(
+//                User.of("조재홍", "userone@example.com", "password1", 0L, Role.EDITOR, "provider1"),
+//                User.of("느대", "usertwo@example.com", "password2", 0L, Role.THUMBNAILER, "provider2"),
+//                User.of("치피치피", "userthree@example.com", "password3", 0L, Role.EDITOR, "provider3")
+//        );
+//
+//        users.forEach(userRepository::save);
+//
+//        // 시드 태스크리스트 생성
+//        TaskList taskList = TaskList.from(2023, 12, users.get(0));
+//        taskListRepository.save(taskList);
+//
+//
+//        Task task1 = Task.from("비디오 편집", 10.0, 100.0, 10000, LocalDate.of(2023, 12, 1), LocalDate.of(2023, 12, 5), "조재홍", taskList);
+//        Task task2 = Task.from("썸네일 디자인", 2.0, 50.0, 10000, LocalDate.of(2023, 12, 3), LocalDate.of(2023, 12, 4), "느대", taskList);
+//        Task task3 = Task.from("영상 자막 작업", 5.0, 75.0, 10000, LocalDate.of(2023, 12, 2), LocalDate.of(2023, 12, 7), "치피치피", taskList);
+//
+//        task3.setStatus(TaskStatus.COMPLETED);
+//
+//        taskRepository.save(task1);
+//        taskRepository.save(task2);
+//        taskRepository.save(task3);
     }
 
     @Bean

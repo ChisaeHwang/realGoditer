@@ -64,8 +64,8 @@ public class TaskServiceImpl implements TaskService{
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("doesn't exist user"));
 
-        int currentYear = LocalDate.now().getYear();
-        int currentMonth = LocalDate.now().getMonthValue();
+        int currentYear = request.getEndDate().getYear();
+        int currentMonth = request.getEndDate().getMonthValue();
 
         TaskList taskList = taskListService.findMonthlyTaskList(currentYear, currentMonth);
 
