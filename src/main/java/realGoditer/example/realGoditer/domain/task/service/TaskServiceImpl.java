@@ -176,7 +176,7 @@ public class TaskServiceImpl implements TaskService{
 
         user.setRole(request.getRole());
 
-        int currentYear = LocalDate.now().getYear();
+        int currentYear = request.getEndDate().getYear();
         int currentMonth = request.getEndDate().getMonthValue();
 
         TaskList taskList = taskListService.findMonthlyTaskList(currentYear, currentMonth);
