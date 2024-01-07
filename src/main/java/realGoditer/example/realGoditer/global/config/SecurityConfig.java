@@ -73,22 +73,24 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
+                                .requestMatchers("/oauth2/authorization/google").authenticated() // oauth2/authorization/google 경로에 대해서만 인증 요구
+                                .requestMatchers("/", "/resources/**").permitAll() // 홈페이지 및 리소스에 대한 접근 허용
+                                .requestMatchers("/.well-known/acme-challenge/**").permitAll()
                                 .requestMatchers("/calculate/**").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers("/main/**").authenticated() // 인증된 사용자만 접근 가능
                                 .requestMatchers("/api/**", "/login/**", "/oauth2/**", "/api/getUserEmail").permitAll()
                                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                                .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth2Login -> {
                     oauth2Login
                             .authorizationEndpoint()
-                            .baseUri("/oauth2/authorize");
+                            .baseUri("/oauth2/authorize"); // OAuth2 로그인 시작점
                     oauth2Login
                             .redirectionEndpoint()
-                            .baseUri("/login/oauth2/code/google");
+                            .baseUri("/login/oauth2/code/google"); // 로그인 성공 후 리디렉션
                     oauth2Login
                             .userInfoEndpoint()
-                            .userService(customOAuth2UserService);
+                            .userService(customOAuth2UserService); // 사용자 정보 처리
                     oauth2Login
                             .successHandler(oAuth2AuthenticationSuccessHandler)
                             .failureHandler(oAuth2AuthenticationFailureHandler);
