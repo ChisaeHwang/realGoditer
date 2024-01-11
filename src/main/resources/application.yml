@@ -52,7 +52,7 @@ app:
 server:
   port: 443
   ssl:
-#    enabled: true
+    enabled: true
     key-store: classpath:bootsecurity.p12
     key-store-password: 46881142
     key-store-type: PKCS12

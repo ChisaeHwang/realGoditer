@@ -3,7 +3,6 @@ package realGoditer.example.realGoditer.domain.member.api;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import realGoditer.example.realGoditer.domain.member.annotation.Authenticated;
 import realGoditer.example.realGoditer.domain.member.annotation.Member;
