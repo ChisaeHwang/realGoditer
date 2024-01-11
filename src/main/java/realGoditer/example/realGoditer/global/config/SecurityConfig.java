@@ -73,7 +73,6 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/calculate/**").hasAuthority("ROLE_ADMIN")
                                 .requestMatchers("/main/**").authenticated() // 인증된 사용자만 접근 가능
                                 .requestMatchers("/api/**", "/login/**", "/oauth2/**", "/api/getUserEmail").permitAll()
                                 .requestMatchers(HttpMethod.OPTIONS).permitAll()

@@ -18,17 +18,16 @@ public class SalaryCalculator {
 
         double totalSpecialPay = 0;
 
+        Long pay = user.getPay() != null ? user.getPay() : 0L; // 기본값으로 0 설정
+
         for(Task task : tasksForUser) {
-            if (task.getTempPay() != user.getPay()) {
+            if (task.getTempPay() != pay) {
                 totalVideoLength -= task.getVideoLength();
                 totalSpecialPay += Math.floor(task.getVideoLength() / 60) * task.getTempPay();
             }
         }
 
-        double monthlySalary =
-                Math.floor(totalVideoLength / 60) * user.getPay()
-                        + totalIncentive
-                        + totalSpecialPay;
+        double monthlySalary = Math.floor(totalVideoLength / 60) * pay + totalIncentive + totalSpecialPay;
 
         double rawIncomeTax = monthlySalary * 0.03;
         double incomeTax = Math.floor(rawIncomeTax / 10) * 10;  // 1의 자리수를 제거
@@ -42,7 +41,7 @@ public class SalaryCalculator {
         return CalculateResponse.from(
                 user.getName(),
                 firstVideoLength,
-                user.getPay(),
+                pay,
                 totalIncentive,
                 monthlySalary,
                 totalDeduction,

@@ -24,7 +24,6 @@ public class TaskListServiceImpl implements TaskListService {
 
     @Override
     public TaskList findMonthlyTaskList(int year, int month) {
-
         return taskListRepository.findByYearAndMonth(year, month)
                 .orElseGet(() -> {
                     TaskList newTaskList = TaskList.from(year, month);
@@ -32,9 +31,12 @@ public class TaskListServiceImpl implements TaskListService {
                 });
     }
 
-
     @Override
     public TaskList findMonthlyTaskListForUser(User user) {
+        if (user == null) {
+            throw new IllegalArgumentException("User cannot be null.");
+        }
+
         int currentYear = LocalDate.now().getYear();
         int currentMonth = LocalDate.now().getMonthValue();
 
@@ -47,9 +49,8 @@ public class TaskListServiceImpl implements TaskListService {
 
     @Override
     public List<TaskList> getAllTaskListsForUser(Long userId) {
-
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("doesn't exist user"));
+                .orElseThrow(() -> new NoSuchElementException("User doesn't exist with id: " + userId));
 
         return taskListRepository.findByUser(user);
     }
