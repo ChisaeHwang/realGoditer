@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
-    // API에서 발생할 수 있는 에러
     NICKNAME_DUPLICATION(409,"U001","Nickname Duplication Exception"),
     NOT_FULLY_JOINED(401,"U002", "You did not sign up for details, Please continue to signup"),
     USER_NOT_FOUND(400,"U003", "user not found exception"),

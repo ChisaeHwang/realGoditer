@@ -16,10 +16,9 @@ import realGoditer.example.realGoditer.domain.task.util.SalaryCalculator;
 import realGoditer.example.realGoditer.global.exception.UnauthorizedException;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,11 +43,13 @@ public class TaskServiceImpl implements TaskService{
 
         TaskList taskList = taskListService.findMonthlyTaskList(currentYear, currentMonth);
 
+        Long userPay = user.getPay() != null ? user.getPay() : 0L;
+
         Task task = Task.from(
                 request.getName(),
                 0,
                 request.getIncentiveAmount(),
-                user.getPay(),
+                userPay,
                 LocalDate.now(),
                 LocalDate.now(),
                 user.getName(),
@@ -69,11 +70,13 @@ public class TaskServiceImpl implements TaskService{
 
         TaskList taskList = taskListService.findMonthlyTaskList(currentYear, currentMonth);
 
+        Long userPay = user.getPay() != null ? user.getPay() : 0L;
+
         Task task = Task.from(
                 request.getName(),
                 0,
                 request.getIncentiveAmount(),
-                user.getPay(),
+                userPay,
                 LocalDate.now(),
                 LocalDate.now(),
                 user.getName(),
@@ -129,8 +132,10 @@ public class TaskServiceImpl implements TaskService{
         TaskList list = taskListService.getTaskListByYearAndMonth(request.getYear(), request.getMonth());
 
         return userList.stream()
-                .map(user -> SalaryCalculator.calculateForUser (user, list.getId(), taskRepository))
+                .filter(Objects::nonNull)
+                .map(user -> SalaryCalculator.calculateForUser(user, list.getId(), taskRepository))
                 .collect(Collectors.toList());
+
 
     }
 
@@ -174,12 +179,19 @@ public class TaskServiceImpl implements TaskService{
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("doesn't exist user"));
 
+        // 예: TaskUpdateRequest에서 pay 필드 검증
+        double requestPay = request.getPay() != null ? request.getPay() : 0L;
+
         user.setRole(request.getRole());
 
         int currentYear = request.getEndDate().getYear();
         int currentMonth = request.getEndDate().getMonthValue();
 
         TaskList taskList = taskListService.findMonthlyTaskList(currentYear, currentMonth);
+        if (taskList == null) {
+            throw new NoSuchElementException("TaskList not found for the given month and year.");
+        }
+
 
         task.taskUpdate(
                 request.getName(),
@@ -188,7 +200,7 @@ public class TaskServiceImpl implements TaskService{
                 request.getStartDate(),
                 request.getEndDate(),
                 request.getStatus(),
-                request.getPay(),
+                requestPay,
                 request.getCreator(),
                 request.getRemarks(),
                 taskList
@@ -208,6 +220,9 @@ public class TaskServiceImpl implements TaskService{
 
         user.setRole(request.getRole());
 
+        // 예: TaskUpdateRequest에서 pay 필드 검증
+        double requestPay = request.getPay() != null ? request.getPay() : 0L;
+
         int currentYear = LocalDate.now().getYear();
         int currentMonth = LocalDate.now().getMonthValue();
 
@@ -217,7 +232,7 @@ public class TaskServiceImpl implements TaskService{
                 request.getName(),
                 request.getVideoLength(),
                 request.getIncentiveAmount(),
-                request.getPay(),
+                requestPay,
                 request.getRemark(),
                 taskList
         );
