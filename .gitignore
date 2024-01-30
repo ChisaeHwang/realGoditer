@@ -38,4 +38,4 @@ out/
 
 Dockerfile
 src/main/resources/application.yml
-
+src/main/resources/bootsecurity.p12
