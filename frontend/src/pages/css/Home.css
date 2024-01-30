@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap");
+
+.home-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.content-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: -7.5rem; /* 이 값을 조절하여 전체적인 위치를 위로 옮기세요. */
+}
+
+.title {
+  font-size: 100px;
+  font-family: "Racing Sans One", sans-serif;
+  color: #48a9ef;
+  margin-bottom: -1.5rem; /* 여기 값을 조절하세요. */
+}
+
+.sub-title {
+  font-size: 16px;
+  font-family: "Pretendard", sans-serif;
+  margin-bottom: 7.5rem;
+}
+
+.google-login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* 양쪽으로 컨텐츠를 밀어내는 속성입니다. */
+  background-color: #ffffff;
+  box-shadow: 0px 0px 16px 0px #0000001a;
+  border-radius: 1.25rem;
+  padding: 0.75rem 3.5rem; /* 패딩을 조절하여 버튼의 가로 길이를 늘리고, 내부 컨텐츠 사이의 간격을 늘립니다. */
+  margin-bottom: 1rem;
+  width: auto; /* 버튼의 너비를 자동으로 설정합니다. */
+}
+
+.google-logo {
+  margin-right: 0.5rem; /* 로고와 텍스트 사이의 간격을 늘립니다. */
+  width: 24px;
+  height: 24px;
+}
+
+.button-text {
+  font-size: 16px;
+  font-family: "Pretendard", sans-serif;
+  font-weight: bold; /* 텍스트를 굵게 만듭니다. */
+}
+
+.info-text {
+  font-size: 16px;
+  font-family: "Pretendard", sans-serif;
+  color: #9ca3af;
+}
+
+.waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}

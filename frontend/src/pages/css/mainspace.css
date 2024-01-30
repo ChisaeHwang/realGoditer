@@ -1,0 +1,29 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
+
+.main-container {
+  display: flex;
+  height: 100vh;
+  font-family: Pretendard;
+}
+
+.main-sidebar {
+  flex: 0 0 12rem; /* 고정된 너비 사용 (필요에 따라 조절 가능) */
+  height: 100vh; /* 전체 높이를 사용 */
+  overflow-y: auto; /* 내용이 높이를 초과하면 스크롤 가능하게 설정 */
+}
+
+.main-content {
+  flex: 1; /* 나머지 공간 사용 */
+  display: flex; /* Flexbox를 사용하여 내부 요소들을 수직으로 배열 */
+  flex-direction: column; /* 내부 요소들을 수직으로 배열 */
+}
+
+/* 위에 추가된 부분을 참고하여 필요한 경우 추가적인 스타일을 적용 */
+
+@media screen and (max-width: 1600px) {
+  .main-sidebar {
+    flex: 0 0 10rem; /* 고정된 너비 사용 (필요에 따라 조절 가능) */
+    height: 100vh; /* 전체 높이를 사용 */
+    overflow-y: auto; /* 내용이 높이를 초과하면 스크롤 가능하게 설정 */
+  }
+}

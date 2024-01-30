@@ -1,0 +1,52 @@
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.loading-dots-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.loading-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #87ceeb;
+  margin: 0 5px;
+  animation: moveDot 0.6s ease-in-out infinite;
+}
+
+.loading-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes moveDot {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  30% {
+    transform: translateY(-20px); /* 빠르게 올라감 */
+    opacity: 0.5;
+  }
+  70% {
+    transform: translateY(0); /* 천천히 내려옴 */
+    opacity: 1;
+  }
+}

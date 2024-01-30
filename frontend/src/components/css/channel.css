@@ -1,0 +1,113 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css");
+
+.channel-title {
+  font-size: 25px;
+  font-family: "Racing Sans One", sans-serif;
+  color: #48a9ef;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.channel-bar {
+  width: 100%; /* 전체 너비 사용 */
+  height: 100%; /* 전체 높이 사용 */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1rem 0.5rem;
+  background-color: white;
+  border-right: 2px solid #eaeaea;
+}
+
+.channel-bar ul {
+  list-style-type: none;
+  padding: 0;
+  padding-left: 0.5rem;
+}
+
+.channel-bar li {
+  display: flex;
+  align-items: center;
+  color: #8b8b8b;
+  font-weight: 500;
+  font-family: "Pretendard", sans-serif;
+  margin: 0.35rem 0;
+}
+
+.channel-bar li svg {
+  margin-right: 10px;
+}
+
+.icon-calculate {
+  margin-left: -2.5px; /* 왼쪽 여백을 줄여 아이콘을 왼쪽으로 이동시킵니다. */
+}
+
+.channel-bar a.active,
+.channel-bar a:hover {
+  background-color: #effaff;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  color: #48a9ef;
+}
+
+.channel-bar a.active svg path,
+.channel-bar a:hover svg path {
+  transition: background-color 0.3s ease;
+  stroke: #48a9ef;
+}
+
+.channel-bar a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.3rem 3.75rem 0.5rem 0.5rem;
+  width: 100%; /* 전체 너비 사용 */
+  transition: background-color 0.3s ease;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.channel-bar a:hover {
+  background-color: #effaff;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  color: #48a9ef;
+}
+
+.channel-bar a:hover svg path {
+  transition: background-color 0.3s ease;
+  stroke: #48a9ef;
+}
+
+@media screen and (max-width: 1600px) {
+  .channel-title {
+    font-size: 22px;
+    font-family: "Racing Sans One", sans-serif;
+    color: #48a9ef;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+  }
+
+  .channel-bar li {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #8b8b8b;
+    font-weight: 500;
+    font-family: "Pretendard", sans-serif;
+    margin: 0.35rem 0;
+  }
+
+  .channel-bar a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    padding: 0.3rem 2.5rem 0.5rem 0.3rem;
+    width: 100%; /* 전체 너비 사용 */
+    transition: background-color 0.3s ease;
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+}
